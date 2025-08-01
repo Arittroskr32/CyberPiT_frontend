@@ -115,6 +115,9 @@ export const apiService = {
     addTeamMember: (data: any) => api.post('/admin/team', data),
     updateTeamMember: (id: string, data: any) => api.patch(`/admin/team/${id}`, data),
     deleteTeamMember: (id: string) => api.delete(`/admin/team/${id}`),
+    uploadTeamImage: (formData: FormData) => api.post('/admin/team/upload-image', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    }),
     setupDefaultTeam: () => api.post('/admin/setup-default-team'),
     
     // Project management
@@ -122,6 +125,9 @@ export const apiService = {
     addProject: (data: any) => api.post('/admin/projects', data),
     updateProject: (id: string, data: any) => api.patch(`/admin/projects/${id}`, data),
     deleteProject: (id: string) => api.delete(`/admin/projects/${id}`),
+    uploadProjectImage: (formData: FormData) => api.post('/admin/projects/upload-image', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    }),
     setupDefaultProjects: () => api.post('/admin/setup-default-projects'),
     
     // Report management

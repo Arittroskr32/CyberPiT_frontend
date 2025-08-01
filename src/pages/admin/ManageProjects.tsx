@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Edit, Trash2, FolderIcon, AlertCircle, CheckCircle, Star, X, ArrowLeftIcon } from 'lucide-react';
+import { Plus, Edit, Trash2, FolderIcon, AlertCircle, CheckCircle, Star, X, ArrowLeftIcon, Upload } from 'lucide-react';
 import { apiService } from '../../services/api';
 
 interface Project {
@@ -50,6 +50,10 @@ const ManageProjects = () => {
     order: 0
   });
   const [newTag, setNewTag] = useState('');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('');
+  const [uploading, setUploading] = useState(false);
+  const [uploadMethod, setUploadMethod] = useState<'url' | 'file'>('file');
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   useEffect(() => {
@@ -90,8 +94,49 @@ const ManageProjects = () => {
       order: 0
     });
     setNewTag('');
+    setSelectedFile(null);
+    setImagePreview('');
+    setUploadMethod('file');
     setEditingProject(null);
     setShowAddForm(false);
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImagePreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const uploadImage = async (): Promise<string | null> => {
+    if (!selectedFile) return null;
+
+    try {
+      setUploading(true);
+      const formData = new FormData();
+      formData.append('image', selectedFile);
+
+      const response = await apiService.admin.uploadProjectImage(formData);
+      
+      if (response.data.success) {
+        showMessage('success', 'Image uploaded successfully');
+        return response.data.data.url;
+      }
+      return null;
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      showMessage('error', 'Failed to upload image');
+      return null;
+    } finally {
+      setUploading(false);
+    }
   };
 
   const addTag = () => {
@@ -115,9 +160,27 @@ const ManageProjects = () => {
     e.preventDefault();
     
     try {
+      let imageUrl = formData.image;
+
+      // If file upload method and file selected, upload image first
+      if (uploadMethod === 'file' && selectedFile) {
+        const uploadedUrl = await uploadImage();
+        if (uploadedUrl) {
+          imageUrl = uploadedUrl;
+        } else {
+          showMessage('error', 'Failed to upload image');
+          return;
+        }
+      }
+
+      const projectData = {
+        ...formData,
+        image: imageUrl
+      };
+
       if (editingProject) {
         // Update existing project
-        const response = await apiService.admin.updateProject(editingProject._id, formData);
+        const response = await apiService.admin.updateProject(editingProject._id, projectData);
         if (response.data.success) {
           showMessage('success', 'Project updated successfully');
           fetchProjects();
@@ -125,7 +188,7 @@ const ManageProjects = () => {
         }
       } else {
         // Add new project
-        const response = await apiService.admin.addProject(formData);
+        const response = await apiService.admin.addProject(projectData);
         if (response.data.success) {
           showMessage('success', 'Project added successfully');
           fetchProjects();
@@ -152,6 +215,9 @@ const ManageProjects = () => {
       order: project.order || 0
     });
     setEditingProject(project);
+    setUploadMethod('url'); // Default to URL for editing
+    setSelectedFile(null);
+    setImagePreview('');
     setShowAddForm(true);
   };
 
@@ -326,16 +392,92 @@ const ManageProjects = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Image URL *
+                  Project Image *
                 </label>
-                <input
-                  type="url"
-                  value={formData.image}
-                  onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  required
-                  placeholder="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb..."
-                />
+                
+                {/* Upload Method Toggle */}
+                <div className="flex gap-4 mb-3">
+                  <label className="flex items-center">
+                    <input
+                      type="radio"
+                      value="file"
+                      checked={uploadMethod === 'file'}
+                      onChange={(e) => setUploadMethod(e.target.value as 'url' | 'file')}
+                      className="mr-2"
+                    />
+                    <span className="text-gray-300">Upload Image</span>
+                  </label>
+                  <label className="flex items-center">
+                    <input
+                      type="radio"
+                      value="url"
+                      checked={uploadMethod === 'url'}
+                      onChange={(e) => setUploadMethod(e.target.value as 'url' | 'file')}
+                      className="mr-2"
+                    />
+                    <span className="text-gray-300">Image URL</span>
+                  </label>
+                </div>
+
+                {uploadMethod === 'file' ? (
+                  <div>
+                    <div className="flex items-center justify-center w-full">
+                      <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-600 border-dashed rounded-lg cursor-pointer bg-gray-700 hover:bg-gray-600 hover:border-gray-500">
+                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                          <Upload className="w-8 h-8 mb-2 text-gray-400" />
+                          <p className="mb-2 text-sm text-gray-400">
+                            <span className="font-semibold">Click to upload</span> project image
+                          </p>
+                          <p className="text-xs text-gray-400">PNG, JPG or JPEG (MAX. 10MB)</p>
+                        </div>
+                        <input
+                          type="file"
+                          className="hidden"
+                          accept="image/*"
+                          onChange={handleFileSelect}
+                        />
+                      </label>
+                    </div>
+                    
+                    {imagePreview && (
+                      <div className="mt-3 relative">
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
+                          className="w-32 h-24 object-cover rounded-lg"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedFile(null);
+                            setImagePreview('');
+                          }}
+                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    )}
+                    
+                    {uploading && (
+                      <div className="mt-3">
+                        <div className="bg-gray-600 rounded-full h-2">
+                          <div className="bg-blue-500 h-2 rounded-full animate-pulse" style={{ width: '70%' }}></div>
+                        </div>
+                        <p className="text-sm text-gray-400 mt-1">Uploading image...</p>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <input
+                    type="url"
+                    value={formData.image}
+                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required={uploadMethod === 'url'}
+                    placeholder="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb..."
+                  />
+                )}
               </div>
 
               <div>
