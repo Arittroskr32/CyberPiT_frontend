@@ -1,14 +1,28 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
+// Environment variable handling with fallbacks
+const getApiUrl = () => {
+  const viteApiUrl = import.meta.env.VITE_API_URL;
+  const nodeEnv = import.meta.env.NODE_ENV;
+  
+  console.log('🔧 API Service Environment Check:');
+  console.log('- NODE_ENV:', nodeEnv);
+  console.log('- VITE_API_URL from env:', viteApiUrl);
+  console.log('- All env vars:', import.meta.env);
+  
+  // Force production URL if in production and no env var
+  if (nodeEnv === 'production' && !viteApiUrl) {
+    const productionUrl = 'https://cyberpit-backend.onrender.com/api';
+    console.log('🚀 Using hardcoded production URL:', productionUrl);
+    return productionUrl;
+  }
+  
+  const finalUrl = viteApiUrl || 'http://localhost:5001/api';
+  console.log('🎯 Final API URL:', finalUrl);
+  return finalUrl;
+};
 
-// Debug logging for environment
-console.log('API_BASE_URL:', API_BASE_URL);
-console.log('Environment vars:', {
-  VITE_API_URL: import.meta.env.VITE_API_URL,
-  NODE_ENV: import.meta.env.NODE_ENV,
-  MODE: import.meta.env.MODE
-});
+const API_BASE_URL = getApiUrl();
 
 const api = axios.create({
   baseURL: API_BASE_URL,
