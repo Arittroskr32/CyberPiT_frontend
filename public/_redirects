@@ -1,1 +1,7 @@
-/*    /index.html   200
+# Handle admin routes specifically
+/only_admin               /only_admin/login    302
+/only_admin/*             /index.html          200
+/admin/*                  /index.html          200
+
+# Handle all other SPA routes
+/*                        /index.html          200
