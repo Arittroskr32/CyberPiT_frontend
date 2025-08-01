@@ -18,6 +18,9 @@ const AdminLogin = () => {
     setLoading(true);
     
     try {
+      console.log('🔗 Attempting login with API base URL:', import.meta.env.VITE_API_URL);
+      console.log('🔗 Full URL will be:', `${import.meta.env.VITE_API_URL || 'http://localhost:5001/api'}/admin/only_admin/login`);
+      
       const response = await apiService.admin.onlyAdminLogin(email, password);
       
       if (response.data.success) {
@@ -30,6 +33,13 @@ const AdminLogin = () => {
         setError(response.data.message || 'Login failed');
       }
     } catch (error: any) {
+      console.error('❌ Login error:', error);
+      console.error('❌ Error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        url: error.config?.url
+      });
       setError(error.response?.data?.message || 'Invalid email or password');
     } finally {
       setLoading(false);

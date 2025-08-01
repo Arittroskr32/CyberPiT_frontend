@@ -2,7 +2,7 @@ services:
   - type: web
     name: cyberpit-frontend
     env: static
-    buildCommand: npm install && npm run build
+    buildCommand: npm install && VITE_API_URL=https://cyberpit-backend.onrender.com/api npm run build
     staticPublishPath: ./dist
     routes:
       - type: redirect

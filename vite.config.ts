@@ -13,4 +13,6 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
   },
+  // Ensure environment variables are properly loaded
+  envPrefix: 'VITE_',
 })
