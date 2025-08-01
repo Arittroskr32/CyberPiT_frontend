@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "npx vite",
-    "build": "npx vite build",
+    "build": "npx vite build && npm run postbuild",
+    "postbuild": "copy public\\_redirects dist\\ && copy public\\404.html dist\\",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "preview": "npx vite preview",
     "backend:install": "cd server && npm install",

@@ -4,3 +4,7 @@ services:
     env: static
     buildCommand: npm install && VITE_API_URL=https://cyberpit-backend.onrender.com/api NODE_ENV=production npm run build
     staticPublishPath: ./dist
+    routes:
+      - type: rewrite
+        source: "/*"
+        destination: "/index.html"

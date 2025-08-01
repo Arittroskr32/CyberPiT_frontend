@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Layout/Navbar';
 import Footer from './components/Layout/Footer';
 import Home from './pages/Home';
@@ -34,8 +34,7 @@ export function App() {
               <Route path="/report" element={<Report />} />
               <Route path="/join-team" element={<JoinTeam />} />
               {/* Admin routes */}
-              <Route path="/only_admin" element={<Navigate to="/only_admin/login" replace />} />
-              <Route path="/only_admin/login" element={<AdminLogin />} />
+              <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin" element={<ProtectedRoute>
                     <AdminDashboard />
                   </ProtectedRoute>} />
