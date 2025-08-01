@@ -9,4 +9,8 @@ export default defineConfig({
     host: true, // This makes it available on all network interfaces
     strictPort: false,
   },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+  },
 })
