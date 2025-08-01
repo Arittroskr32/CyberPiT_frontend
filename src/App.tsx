@@ -39,7 +39,15 @@ export function App() {
               <Route path="/report" element={<Report />} />
               <Route path="/join-team" element={<JoinTeam />} />
               {/* Admin routes */}
-              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/login" element={
+                <div className="min-h-screen flex items-center justify-center">
+                  <div className="text-center">
+                    <h1 className="text-4xl font-bold text-white mb-4">Admin Login Route Works!</h1>
+                    <p className="text-gray-400 mb-4">Current path: {window.location.pathname}</p>
+                    <AdminLogin />
+                  </div>
+                </div>
+              } />
               <Route path="/admin" element={<ProtectedRoute>
                     <AdminDashboard />
                   </ProtectedRoute>} />
