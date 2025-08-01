@@ -8,20 +8,48 @@ const VideoHero = () => {
     desktop: '/video/pc_video.mp4',
     mobile: '/video/mobile_video.mp4'
   });
+
   useEffect(() => {
     // Check if device is mobile
     const checkDevice = () => {
       setIsMobile(window.innerWidth <= 768);
     };
+
+    // Load current videos from backend
+    const loadCurrentVideos = async () => {
+      try {
+        console.log('🎥 Loading current videos from backend...');
+        const response = await apiService.videos.getCurrent();
+        
+        if (response.data.success && response.data.videos) {
+          const newVideoSources = {
+            desktop: response.data.videos.desktop,
+            mobile: response.data.videos.mobile
+          };
+          
+          console.log('✅ Video sources loaded:', newVideoSources);
+          setVideoSources(newVideoSources);
+          
+          // Save to localStorage for next visit
+          localStorage.setItem('cyberpit_video_sources', JSON.stringify(newVideoSources));
+        }
+      } catch (error) {
+        console.error('❌ Failed to load videos:', error);
+        // Fallback to localStorage if available
+        const savedVideoSources = localStorage.getItem('cyberpit_video_sources');
+        if (savedVideoSources) {
+          setVideoSources(JSON.parse(savedVideoSources));
+        }
+      }
+    };
+
     // Initial check
     checkDevice();
+    loadCurrentVideos();
+
     // Add event listener for window resize
     window.addEventListener('resize', checkDevice);
-    // Load video sources from localStorage if available
-    const savedVideoSources = localStorage.getItem('cyberpit_video_sources');
-    if (savedVideoSources) {
-      setVideoSources(JSON.parse(savedVideoSources));
-    }
+
     return () => window.removeEventListener('resize', checkDevice);
   }, []);
   return <section className="relative min-h-screen">

@@ -90,11 +90,12 @@ export const apiService = {
     updateContactStatus: (id: string, status: string) => api.patch(`/admin/contacts/${id}`, { status }),
     
     // Video management
-    getVideos: () => api.get('/admin/videos'),
-    uploadVideo: (formData: FormData) => api.post('/admin/videos/upload', formData, {
+    getVideos: () => api.get('/videos/admin/all'),
+    uploadVideo: (formData: FormData) => api.post('/videos/admin/upload', formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     }),
-    deleteVideo: (id: string) => api.delete(`/admin/videos/${id}`),
+    deleteVideo: (id: string) => api.delete(`/videos/admin/${id}`),
+    toggleVideo: (id: string) => api.patch(`/videos/admin/${id}/toggle`),
     
     // Subscription management
     getSubscriptions: () => api.get('/admin/subscriptions'),
