@@ -4,12 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CyberPiT - Loading...</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #111827;
+            color: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .loading {
+            text-align: center;
+        }
+    </style>
     <script>
-        // Redirect to index.html for SPA routing
-        window.location.replace('/index.html' + window.location.search + window.location.hash);
+        // Get the current path and redirect to index.html with hash routing fallback
+        const currentPath = window.location.pathname;
+        const currentSearch = window.location.search;
+        const currentHash = window.location.hash;
+        
+        console.log('404.html - Redirecting from:', currentPath);
+        
+        // Redirect to index.html while preserving the original path
+        if (currentPath !== '/index.html' && currentPath !== '/') {
+            const newUrl = '/index.html' + currentSearch + currentHash;
+            console.log('404.html - Redirecting to:', newUrl);
+            window.location.replace(newUrl);
+        }
     </script>
 </head>
 <body>
-    <p>Redirecting...</p>
+    <div class="loading">
+        <h2>CyberPiT</h2>
+        <p>Loading admin panel...</p>
+        <p>Redirecting...</p>
+    </div>
 </body>
 </html>

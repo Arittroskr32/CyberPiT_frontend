@@ -20,7 +20,12 @@ import ManageReports from './pages/admin/ManageReports';
 import ManageApplications from './pages/admin/ManageApplications';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/admin/ProtectedRoute';
+
 export function App() {
+  // Add debug logging
+  console.log('🚀 App Component Loading - Current URL:', window.location.href);
+  console.log('🚀 App Component - Pathname:', window.location.pathname);
+  
   return <AuthProvider>
       <Router>
         <div className="flex flex-col min-h-screen bg-gray-900 text-gray-100">
@@ -63,7 +68,13 @@ export function App() {
                     <ManageApplications />
                   </ProtectedRoute>} />
               {/* Catch-all route for 404 - must be last */}
-              <Route path="*" element={<Home />} />
+              <Route path="*" element={<div className="min-h-screen flex items-center justify-center">
+                    <div className="text-center">
+                      <h1 className="text-4xl font-bold text-white mb-4">404 - Page Not Found</h1>
+                      <p className="text-gray-400 mb-4">Current path: {window.location.pathname}</p>
+                      <a href="/" className="text-blue-500 hover:text-blue-400">Go back to home</a>
+                    </div>
+                  </div>} />
             </Routes>
           </main>
           <Footer />

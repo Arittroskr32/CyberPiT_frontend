@@ -19,7 +19,14 @@ export default defineConfig(({ command, mode }) => {
       outDir: 'dist',
       assetsDir: 'assets',
       sourcemap: true,
+      rollupOptions: {
+        input: {
+          main: './index.html',
+        }
+      }
     },
+    // Automatically copy files from public directory
+    publicDir: 'public',
     // Ensure environment variables are properly loaded
     envPrefix: 'VITE_',
     define: {
@@ -28,5 +35,9 @@ export default defineConfig(({ command, mode }) => {
         env.VITE_API_URL || 'https://cyberpit-backend.onrender.com/api'
       ),
     },
+    preview: {
+      port: 5173,
+      strictPort: false,
+    }
   }
 })
