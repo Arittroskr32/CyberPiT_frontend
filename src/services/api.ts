@@ -69,6 +69,15 @@ export const apiService = {
     getCurrent: () => api.get('/videos/current'),
   },
   
+  // Blog APIs
+  blogs: {
+    getAll: (params?: any) => api.get('/blogs', { params }),
+    getById: (id: string) => api.get(`/blogs/${id}`),
+    getFeatured: () => api.get('/blogs/featured/list'),
+    getCategories: () => api.get('/blogs/categories/list'),
+    like: (id: string) => api.post(`/blogs/${id}/like`),
+  },
+  
   feedback: {
     getAll: () => api.get('/feedback'),
     submit: (data: any) => api.post('/feedback', data),
@@ -143,6 +152,16 @@ export const apiService = {
     updateApplication: (id: string, data: any) => api.patch(`/admin/applications/${id}`, data),
     deleteApplication: (id: string) => api.delete(`/admin/applications/${id}`),
     clearAllApplications: () => api.delete('/admin/applications'),
+    
+    // Blog management
+    getBlogs: (params?: any) => api.get('/blogs/admin/all', { params }),
+    getBlog: (id: string) => api.get(`/blogs/admin/${id}`),
+    createBlog: (data: any) => api.post('/blogs/admin/create', data),
+    updateBlog: (id: string, data: any) => api.put(`/blogs/admin/${id}`, data),
+    deleteBlog: (id: string) => api.delete(`/blogs/admin/${id}`),
+    uploadBlogImage: (formData: FormData) => api.post('/blogs/admin/upload-image', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    }),
   },
 };
 

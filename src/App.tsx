@@ -8,6 +8,7 @@ import Projects from './pages/Projects';
 import Contact from './pages/Contact';
 import Report from './pages/Report';
 import JoinTeam from './pages/JoinTeam';
+import Blog from './pages/Blog';
 import AdminLogin from './pages/admin/Login';
 import AdminDashboard from './pages/admin/Dashboard';
 import ManageFeedback from './pages/admin/ManageFeedback';
@@ -18,6 +19,7 @@ import ManageVideos from './pages/admin/ManageVideos';
 import ManageSubscriptions from './pages/admin/ManageSubscriptions';
 import ManageReports from './pages/admin/ManageReports';
 import ManageApplications from './pages/admin/ManageApplications';
+import ManageBlog from './pages/admin/ManageBlog';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 
@@ -38,6 +40,7 @@ export function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/report" element={<Report />} />
               <Route path="/join-team" element={<JoinTeam />} />
+              <Route path="/blog" element={<Blog />} />
               {/* Admin routes */}
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin" element={<ProtectedRoute>
@@ -66,6 +69,9 @@ export function App() {
                   </ProtectedRoute>} />
               <Route path="/admin/applications" element={<ProtectedRoute>
                     <ManageApplications />
+                  </ProtectedRoute>} />
+              <Route path="/admin/blog" element={<ProtectedRoute>
+                    <ManageBlog />
                   </ProtectedRoute>} />
               {/* Catch-all route for 404 - must be last */}
               <Route path="*" element={<div className="min-h-screen flex items-center justify-center">

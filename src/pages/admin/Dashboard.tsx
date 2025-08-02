@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { apiService } from '../../services/api';
-import { MessageSquareIcon, UsersIcon, StarIcon, FolderIcon, LogOutIcon, VideoIcon, MailIcon, FileTextIcon, UserPlusIcon } from 'lucide-react';
+import { MessageSquareIcon, UsersIcon, StarIcon, FolderIcon, LogOutIcon, VideoIcon, MailIcon, FileTextIcon, UserPlusIcon, BookOpenIcon } from 'lucide-react';
 
 interface DashboardStats {
   contacts: number;
@@ -17,6 +17,7 @@ interface DashboardStats {
   feedback: number;
   pendingFeedback: number;
   videos: number;
+  blogs: number;
 }
 
 const AdminDashboard = () => {
@@ -98,6 +99,13 @@ const AdminDashboard = () => {
     color: 'from-green-600 to-emerald-600',
     count: stats?.contacts || 0,
     badge: stats?.unreadContacts || 0
+  }, {
+    title: 'Manage Blog',
+    description: 'Create, edit, and manage blog posts',
+    icon: <BookOpenIcon className="h-8 w-8" />,
+    link: '/admin/blog',
+    color: 'from-orange-600 to-red-600',
+    count: stats?.blogs || 0
   }];
   const handleLogout = () => {
     logout();

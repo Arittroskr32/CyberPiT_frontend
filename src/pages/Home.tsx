@@ -4,10 +4,15 @@ import { apiService } from '../services/api';
 import FeedbackForm from '../components/FeedbackForm';
 const VideoHero = () => {
   const [isMobile, setIsMobile] = useState(false);
-  const [videoSources, setVideoSources] = useState({
-    desktop: '/video/pc_video.mp4',
-    mobile: '/video/mobile_video.mp4'
+  const [videoSources, setVideoSources] = useState<{
+    desktop: string | null;
+    mobile: string | null;
+  }>({
+    desktop: null,
+    mobile: null
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     // Check if device is mobile
@@ -19,6 +24,9 @@ const VideoHero = () => {
     const loadCurrentVideos = async () => {
       try {
         console.log('🎥 Loading current videos from backend...');
+        setLoading(true);
+        setError(false);
+        
         const response = await apiService.videos.getCurrent();
         
         if (response.data.success && response.data.videos) {
@@ -29,17 +37,15 @@ const VideoHero = () => {
           
           console.log('✅ Video sources loaded:', newVideoSources);
           setVideoSources(newVideoSources);
-          
-          // Save to localStorage for next visit
-          localStorage.setItem('cyberpit_video_sources', JSON.stringify(newVideoSources));
+        } else {
+          console.warn('⚠️ No videos found in database');
+          setError(true);
         }
       } catch (error) {
         console.error('❌ Failed to load videos:', error);
-        // Fallback to localStorage if available
-        const savedVideoSources = localStorage.getItem('cyberpit_video_sources');
-        if (savedVideoSources) {
-          setVideoSources(JSON.parse(savedVideoSources));
-        }
+        setError(true);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -52,24 +58,43 @@ const VideoHero = () => {
 
     return () => window.removeEventListener('resize', checkDevice);
   }, []);
-  return <section className="relative min-h-screen">
+  return (
+    <section className="relative min-h-screen">
       <div className="w-full h-screen">
-        <video 
-          autoPlay 
-          muted 
-          loop 
-          playsInline 
-          preload="auto"
-          className="w-full h-full object-cover" 
-          src={isMobile ? videoSources.mobile : videoSources.desktop}
-          onLoadedData={(e) => {
-            e.currentTarget.play();
-          }}
-        >
-          Your browser does not support the video tag.
-        </video>
+        {loading ? (
+          <div className="w-full h-full bg-gray-900 flex items-center justify-center">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mx-auto mb-4"></div>
+              <p className="text-white text-lg">Loading video...</p>
+            </div>
+          </div>
+        ) : error || !videoSources.desktop || !videoSources.mobile ? (
+          <div className="w-full h-full bg-gray-900 flex items-center justify-center">
+            <div className="text-center">
+              <div className="text-red-500 text-6xl mb-4">⚠️</div>
+              <h2 className="text-white text-2xl font-bold mb-2">Video Not Available</h2>
+              <p className="text-gray-400">Please contact the administrator to upload videos.</p>
+            </div>
+          </div>
+        ) : (
+          <video 
+            autoPlay 
+            muted 
+            loop 
+            playsInline 
+            preload="auto"
+            className="w-full h-full object-cover" 
+            src={isMobile ? videoSources.mobile : videoSources.desktop}
+            onLoadedData={(e) => {
+              e.currentTarget.play();
+            }}
+          >
+            Your browser does not support the video tag.
+          </video>
+        )}
       </div>
-    </section>;
+    </section>
+  );
 };
 const Mission = () => {
   return <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-900">
