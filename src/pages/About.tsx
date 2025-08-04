@@ -67,16 +67,16 @@ const About = () => {
             <h2 className="text-3xl font-bold text-blue-400 mb-6">Our Story</h2>
             <div className="prose prose-lg prose-blue text-gray-300">
               <p>
-                CyberPiT Inc. was founded in 2025 by a team of passionate cybersecurity professionals with a shared mission: to protect digital assets, uncover vulnerabilities, and build resilient infrastructures through ethical hacking and strategic defense.
+                CyberPiT Inc. was founded in 2025 by a group of passionate cybersecurity professionals united by one purpose: to defend digital landscapes, expose system vulnerabilities, and empower others through ethical hacking and proactive security. What started as a side project in a shared co-working space quickly evolved into a cutting-edge cybersecurity organization fueled by curiosity, community, and code.
               </p>
               <p>
-                What began as a focused initiative to build open-source tools and participate in Capture The Flag (CTF) competitions has rapidly grown into a respected cybersecurity organization. Our expertise spans penetration testing, threat intelligence, and hands-on defense across complex systems.
+                Our journey began with creating open-source tools and participating in high-stakes Capture The Flag (CTF) competitions. These challenges sharpened our technical skills and taught us the value of collaboration under pressure. Over time, we transformed these learning experiences into structured platforms for education, simulation, and real-world defense.
               </p>
               <p>
-                Our projects are designed to provide real-world experience in a controlled setting — where learners can safely test, break, investigate, and build their cyber skills from the ground up.
+                Today, CyberPiT Inc. offers services ranging from deep-dive penetration testing to adversary emulation and threat hunting across diverse digital ecosystems. Our team thrives at the intersection of offense and defense, helping organizations identify blind spots, strengthen infrastructure, and prepare for the evolving threat landscape.
               </p>
               <p>
-                 Whether you're a red team operator, a security enthusiast, or a student in infosec — CyberPiT Inc. is your playground to grow, fail, learn, and evolve.
+                 We believe cybersecurity should be accessible, hands-on, and transformative. Our labs and challenges provide a controlled yet dynamic environment where learners can test, break, and build — cultivating both technical skills and hacker mindset. At CyberPiT, every failure is a lesson, every exploit a doorway to knowledge.
               </p>
             </div>
           </div>

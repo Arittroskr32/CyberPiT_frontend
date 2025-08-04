@@ -101,9 +101,7 @@ const Mission = () => {
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="text-3xl font-bold text-white mb-8">Our Mission</h2>
         <p className="text-xl text-gray-300 leading-relaxed">
-          CyberPiT is a team of elite cybersecurity researchers, hackers, and
-          defenders. From capture-the-flag challenges to real-world offensive
-          and defensive security — we do it all.
+          CyberPiT is a collective of ethical hackers, researchers, and defenders dedicated to hands-on cybersecurity. From building open-source tools to simulating real-world attacks — we train, test, and protect the digital world.
         </p>
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="p-6 bg-gray-800 rounded-lg border border-gray-700 hover:border-blue-500 transition-colors">
@@ -111,7 +109,7 @@ const Mission = () => {
               Exploit
             </h3>
             <p className="text-gray-300">
-              We find vulnerabilities before the bad guys do.
+              We uncover and responsibly disclose vulnerabilities before they can be abused.
             </p>
           </div>
           <div className="p-6 bg-gray-800 rounded-lg border border-gray-700 hover:border-purple-500 transition-colors">
@@ -119,13 +117,13 @@ const Mission = () => {
               Research
             </h3>
             <p className="text-gray-300">
-              We advance the field through innovative techniques.
+              We push boundaries with original techniques and community-driven innovation.
             </p>
           </div>
           <div className="p-6 bg-gray-800 rounded-lg border border-gray-700 hover:border-blue-500 transition-colors">
             <h3 className="text-xl font-semibold text-blue-400 mb-2">Defend</h3>
             <p className="text-gray-300">
-              We build robust defenses against emerging threats.
+              We craft resilient defenses through red teaming, threat emulation, and training.
             </p>
           </div>
         </div>
