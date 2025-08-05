@@ -29,6 +29,10 @@ const Navbar = () => {
     name: 'Blog',
     path: '/blog'
   }, {
+    name: 'Academy',
+    path: 'https://academy.cyberpit.live',
+    external: true
+  }, {
     name: 'Report',
     path: '/report'
   }, {
@@ -50,10 +54,29 @@ const Navbar = () => {
           {/* Desktop menu */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
-              {navLinks.map(link => <Link key={link.name} to={link.path} className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 relative group ${location.pathname === link.path ? 'text-blue-400' : 'text-gray-300 hover:text-blue-400'}`}>
-                  {link.name}
-                  <span className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-400 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ${location.pathname === link.path ? 'scale-x-100' : ''}`}></span>
-                </Link>)}
+              {navLinks.map(link => 
+                link.external ? (
+                  <a
+                    key={link.name}
+                    href={link.path}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 relative group text-gray-300 hover:text-blue-400"
+                  >
+                    {link.name}
+                    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-400 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                  </a>
+                ) : (
+                  <Link 
+                    key={link.name} 
+                    to={link.path} 
+                    className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 relative group ${location.pathname === link.path ? 'text-blue-400' : 'text-gray-300 hover:text-blue-400'}`}
+                  >
+                    {link.name}
+                    <span className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-400 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ${location.pathname === link.path ? 'scale-x-100' : ''}`}></span>
+                  </Link>
+                )
+              )}
             </div>
           </div>
           {/* Mobile menu button */}
@@ -67,9 +90,29 @@ const Navbar = () => {
       {/* Mobile menu */}
       <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-900/95 shadow-lg shadow-blue-500/10">
-          {navLinks.map(link => <Link key={link.name} to={link.path} className={`block px-3 py-2 rounded-md text-base font-medium ${location.pathname === link.path ? 'text-blue-400 bg-gray-800' : 'text-gray-300 hover:bg-gray-800 hover:text-blue-400'}`} onClick={() => setIsMenuOpen(false)}>
-              {link.name}
-            </Link>)}
+          {navLinks.map(link => 
+            link.external ? (
+              <a
+                key={link.name}
+                href={link.path}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-blue-400"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {link.name}
+              </a>
+            ) : (
+              <Link 
+                key={link.name} 
+                to={link.path} 
+                className={`block px-3 py-2 rounded-md text-base font-medium ${location.pathname === link.path ? 'text-blue-400 bg-gray-800' : 'text-gray-300 hover:bg-gray-800 hover:text-blue-400'}`} 
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {link.name}
+              </Link>
+            )
+          )}
         </div>
       </div>
     </nav>;
